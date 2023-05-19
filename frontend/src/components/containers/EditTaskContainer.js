@@ -44,7 +44,7 @@ class EditTaskContainer extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      title: "",
+      description: "",
       timeslot: "",
       employeeId: null,
       redirect: false,
@@ -58,7 +58,7 @@ class EditTaskContainer extends Component {
     this.props.fetchTask(this.props.match.params.id);
     this.props.fetchEmployees();
     this.setState({
-      title: this.props.course.title,
+      description: this.props.course.description,
       timeslot: this.props.course.timeslot,
       employeeId: this.props.course.employeeId,
     });
@@ -86,15 +86,15 @@ class EditTaskContainer extends Component {
   handleSubmit = event => {
     event.preventDefault();
     //implementing form validation
-    if (this.state.title === "") {
-      this.setState({ error: "Error: title cannot be empty" });
+    if (this.state.description === "") {
+      this.setState({ error: "Error: description cannot be empty" });
       return;
     }
 
     //get new info for course from form input
     let task = {
       id: this.props.course.id,
-      title: this.state.title,
+      description: this.state.description,
       timeslot: this.state.timeslot,
       employeeId: this.state.employeeId
     };
@@ -127,8 +127,8 @@ class EditTaskContainer extends Component {
     return (
       <div>
         <form style={{ textAlign: 'center' }} onSubmit={(e) => this.handleSubmit(e)}>
-          <label style={{ color: '#11153e', fontWeight: 'bold' }}>Title: </label>
-          <input type="text" name="title" value={this.state.title || ''} placeholder={task.title} onChange={(e) => this.handleChange(e)} />
+          <label style={{ color: '#11153e', fontWeight: 'bold' }}>description: </label>
+          <input type="text" name="description" value={this.state.description || ''} placeholder={task.description} onChange={(e) => this.handleChange(e)} />
           <br />
 
           <label style={{ color: '#11153e', fontWeight: 'bold' }}>Timeslot: </label>
