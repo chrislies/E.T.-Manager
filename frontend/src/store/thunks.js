@@ -6,7 +6,7 @@ let path = "http://localhost:5001/api";
 
 // THUNKS
 
-//All instructors
+//All employees
 export const fetchAllEmployeesThunk = () => async (dispatch) => {
   try {
     let res = await axios.get(`${path}/employees`);
@@ -16,15 +16,8 @@ export const fetchAllEmployeesThunk = () => async (dispatch) => {
   }
 };
 
-//Single instructor
+//Single employee
 export const fetchEmployeeThunk = (id) => async (dispatch) => {
-  // thunk creator would not an be async function 
-  // if using Promise.then:
-  // return axios
-  //   .get(`${path}/api/instructors/${id}`)
-  //   .then((res) => res.data)
-  //   .then((instructor) => dispatch(ac.fetchInstructor(instructor)))
-  //   .catch((err) => console.log(err));
   try {
     let res = await axios.get(`${path}/employees/${id}`);
     dispatch(ac.fetchEmployee(res.data));
@@ -33,7 +26,7 @@ export const fetchEmployeeThunk = (id) => async (dispatch) => {
   }
 };
 
-//All courses
+//All tasks
 export const fetchAllTasksThunk = () => async (dispatch) => {
   try {
     let res = await axios.get(`${path}/tasks`);
@@ -44,7 +37,6 @@ export const fetchAllTasksThunk = () => async (dispatch) => {
 };
 
 export const addTaskThunk = (task) => async (dispatch) => {
-  // course = { title: "CSCI 127" }
   try {
     let res = await axios.post(`${path}/tasks`, task);
     dispatch(ac.addTask(res.data));
@@ -66,15 +58,15 @@ export const deleteTaskThunk = taskId => async dispatch => {
 
 export const editTaskThunk = task => async dispatch => {
   try {
-    let res = await axios.put(`${path}/courses/${task.id}`, task);
-    //res.data is the updated course object
+    let res = await axios.put(`${path}/tasks/${task.id}`, task);
+    //res.data is the updated task object
     dispatch(ac.editTask(res.data));
   } catch (err) {
     console.error(err);
   }
 };
 
-//Single course
+//Single task
 export const fetchTaskThunk = id => async dispatch => {
   try {
     let res = await axios.get(`${path}/tasks/${id}`);

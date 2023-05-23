@@ -1,23 +1,23 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import {
+import { 
   fetchEmployeeThunk,
   fetchAllTasksThunk,
-  editTaskThunk
+  editTaskThunk 
 } from "../../store/thunks";
 
 import { EmployeeView } from "../views";
 
 class EmployeeContainer extends Component {
   componentDidMount() {
-    //getting instructor ID from url
+    //getting employee ID from url
     this.props.fetchEmployee(this.props.match.params.id);
     this.props.fetchTasks();
   }
 
   render() {
     return (
-      <EmployeeView
+      <EmployeeView 
         employee={this.props.employee}
         editTask={this.props.editTask}
         allTasks={this.props.allTasks}

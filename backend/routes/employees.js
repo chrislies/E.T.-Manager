@@ -9,13 +9,10 @@ const { Employee, Task } = require("../database/models");
 const ash = require("express-async-handler");
 
 /** GET ALL employees */
-router.get(
-  "/",
-  ash(async (req, res) => {
+router.get("/",ash(async (req, res) => {
     let employees = await Employee.findAll({ include: [Task] });
     res.status(200).json(employees);
-  })
-);
+}));
 
 /** GET employee BY ID*/
 router.get(

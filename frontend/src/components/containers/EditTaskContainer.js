@@ -11,7 +11,7 @@ import { fetchTaskThunk, editTaskThunk, fetchAllEmployeesThunk } from '../../sto
 IMPORTANT: comments regarding implementation details!!
 =====================================================
 You'll see that we have two ways of interacting with the UI
-in order to change the course's instructor
+in order to change the task's instructor
 
 The dropdown menu is straighforward, it's pretty much the same 
 as having the input field for the instructorId but allows us
@@ -22,20 +22,20 @@ This was done so we could get the other instructors in the database.
 We filter out the current instructor from the array at the beginning of 
 the render function, and use this array to populate the dropdown menu
 options. Because it's part of the form, we don't need to modify the 
-handleSubmit function. On redirect to the CourseView we will see the 
+handleSubmit function. On redirect to the taskView we will see the 
 updates.
 
 You will see below the form there is another part of the UI that is
-also changing the current course's instructor. This structure is similar
-to how changing assigned courses is done in the InstrutcorView. There is
+also changing the current task's instructor. This structure is similar
+to how changing assigned tasks is done in the InstrutcorView. There is
 a slight drawback to using this approach in this context. When we perform
-an EDIT_COURSE action (initiated by calling the editCourseThunk), this action
-is sent to the allCourses reducer, not the course reducer. For that reason, 
-we will not see the updates in the single course view unless there is another 
-call to the fetchCourseThunk. This is done once when we redirect after form
+an EDIT_TASK action (initiated by calling the editTaskThunk), this action
+is sent to the allTasks reducer, not the task reducer. For that reason, 
+we will not see the updates in the single task view unless there is another 
+call to the fetchTaskThunk. This is done once when we redirect after form
 submission, which is why the data is shown without needing to refresh. 
 If we want that same functionality within the container, we need to make
-a call to fetchCourse after each editCourse. We see that in the onClick
+a call to fetchTask after each editTask. We see that in the onClick
 functionality of the buttons controlling that portion of the UI. 
 
 */
@@ -54,13 +54,13 @@ class EditTaskContainer extends Component {
   }
 
   componentDidMount() {
-    //getting course ID from url
+    //getting task ID from url
     this.props.fetchTask(this.props.match.params.id);
     this.props.fetchEmployees();
     this.setState({
-      description: this.props.course.description,
-      timeslot: this.props.course.timeslot,
-      employeeId: this.props.course.employeeId,
+      description: this.props.task.description,
+      timeslot: this.props.task.timeslot,
+      employeeId: this.props.task.employeeId,
     });
   }
 
@@ -91,9 +91,9 @@ class EditTaskContainer extends Component {
       return;
     }
 
-    //get new info for course from form input
+    //get new info for task from form input
     let task = {
-      id: this.props.course.id,
+      id: this.props.task.id,
       description: this.state.description,
       timeslot: this.state.timeslot,
       employeeId: this.state.employeeId
@@ -119,7 +119,7 @@ class EditTaskContainer extends Component {
 
     let otherEmployees = allEmployees.filter(employee => employee.id !== assignedEmployee);
 
-    //go to single course view of the edited course
+    //go to single task view of the edited task
     if (this.state.redirect) {
       return (<Redirect to={`/task/${this.state.redirectId}`} />)
     }
