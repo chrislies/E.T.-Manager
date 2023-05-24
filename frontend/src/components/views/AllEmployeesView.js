@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 // import { addEmployee } from "../../store/actions/actionCreators";
 
 const AllEmployeesView = (props) => {
-  let { deleteEmployee } = props;
+  let { allEmployees, deleteEmployee } = props;
   if (!props.allEmployees.length) {
     return (
       <div>
@@ -17,7 +17,7 @@ const AllEmployeesView = (props) => {
 
   return (
     <div>
-      {props.allEmployees.map((employee) => {
+      {allEmployees.map((employee) => {
         let name = employee.firstname + " " + employee.lastname;
         return (
           <div key={employee.id} style={{ marginTop: 15 }}>
