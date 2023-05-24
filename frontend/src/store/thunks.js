@@ -48,6 +48,17 @@ export const deleteEmployeeThunk = employeeId => async dispatch => {
   }
 }
 
+//Edit employee
+export const editEmployeeThunk = employee => async dispatch => {
+  try {
+    let res = await axios.put(`${path}/employees/${employee.id}`, employee);
+    //res.data is the updated employee object
+    dispatch(ac.editEmployee(res.data));
+  } catch (err) {
+    console.error(err);
+  }
+};
+
 //All tasks
 export const fetchAllTasksThunk = () => async (dispatch) => {
   try {

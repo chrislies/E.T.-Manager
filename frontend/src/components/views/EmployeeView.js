@@ -9,9 +9,13 @@ const EmployeeView = (props) => {
     <div>
       <h1>{`${employee.firstname} ${employee.lastname}`}</h1>
       <h3>{employee.department}</h3>
-      <div>
-        <Link to={`/`}>Home</Link>
-      </div>
+      <Link to={`/editEmployee/${employee.id}`}>
+        <button>Edit Employee Info</button>
+      </Link>
+      <br />
+      <Link to={`/`}>
+        <button>Home</button>
+      </Link>
       <div style={{ display: "flex", flexDirection: "row", justifyContent: "space-evenly" }}>
         <div>Assigned tasks:
           {assignedTasks.map(task => {
