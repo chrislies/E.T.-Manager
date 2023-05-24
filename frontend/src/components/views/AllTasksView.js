@@ -2,7 +2,6 @@ import { Link } from "react-router-dom";
 
 const AllTasksView = (props) => {
   let { tasks, deleteTask } = props;
-  //courses = [{id: 300, title: "hello"}]
   if (!tasks.length) {
     return (
       <div>
@@ -17,11 +16,11 @@ const AllTasksView = (props) => {
   return (
     <div>
       {tasks.map((task) => {
-        let title = task.title;
+        let description = task.description;
         return (
-          <div key={task.id}>
+          <div key={task.id} style={{ display: "flex", flexDirection: "row", justifyContent: "center", margin: 15 }}>
             <Link to={`/task/${task.id}`}>
-              <h1>{title}</h1>
+              <h1 style={{ margin: 0, marginRight: 15 }}>{description}</h1>
             </Link>
             <button onClick={() => deleteTask(task.id)}>Delete</button>
           </div>
@@ -29,7 +28,10 @@ const AllTasksView = (props) => {
       }
       )}
       <Link to={`/newTask`}>
-        <button>Add New Task</button>
+        <button style={{ marginRight: 15 }}>Add New Task</button>
+      </Link>
+      <Link to={`/`}>
+        <button>Home</button>
       </Link>
     </div>
   );

@@ -11,7 +11,7 @@ import { fetchTaskThunk, editTaskThunk, fetchAllEmployeesThunk } from '../../sto
 IMPORTANT: comments regarding implementation details!!
 =====================================================
 You'll see that we have two ways of interacting with the UI
-in order to change the course's instructor
+in order to change the task's instructor
 
 The dropdown menu is straighforward, it's pretty much the same 
 as having the input field for the instructorId but allows us
@@ -22,20 +22,20 @@ This was done so we could get the other instructors in the database.
 We filter out the current instructor from the array at the beginning of 
 the render function, and use this array to populate the dropdown menu
 options. Because it's part of the form, we don't need to modify the 
-handleSubmit function. On redirect to the CourseView we will see the 
+handleSubmit function. On redirect to the taskView we will see the 
 updates.
 
 You will see below the form there is another part of the UI that is
-also changing the current course's instructor. This structure is similar
-to how changing assigned courses is done in the InstrutcorView. There is
+also changing the current task's instructor. This structure is similar
+to how changing assigned tasks is done in the InstrutcorView. There is
 a slight drawback to using this approach in this context. When we perform
-an EDIT_COURSE action (initiated by calling the editCourseThunk), this action
-is sent to the allCourses reducer, not the course reducer. For that reason, 
-we will not see the updates in the single course view unless there is another 
-call to the fetchCourseThunk. This is done once when we redirect after form
+an EDIT_TASK action (initiated by calling the editTaskThunk), this action
+is sent to the allTasks reducer, not the task reducer. For that reason, 
+we will not see the updates in the single task view unless there is another 
+call to the fetchTaskThunk. This is done once when we redirect after form
 submission, which is why the data is shown without needing to refresh. 
 If we want that same functionality within the container, we need to make
-a call to fetchCourse after each editCourse. We see that in the onClick
+a call to fetchTask after each editTask. We see that in the onClick
 functionality of the buttons controlling that portion of the UI. 
 
 */
@@ -44,8 +44,9 @@ class EditTaskContainer extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      title: "",
-      timeslot: "",
+      description: "",
+      priority: "",
+      isComplete: false,
       employeeId: null,
       redirect: false,
       redirectId: null,
@@ -54,13 +55,14 @@ class EditTaskContainer extends Component {
   }
 
   componentDidMount() {
-    //getting course ID from url
+    //getting task ID from url
     this.props.fetchTask(this.props.match.params.id);
     this.props.fetchEmployees();
     this.setState({
-      title: this.props.course.title,
-      timeslot: this.props.course.timeslot,
-      employeeId: this.props.course.employeeId,
+      description: this.props.task.description,
+      priority: this.props.task.priority,
+      isComplete: this.props.task.isComplete,
+      employeeId: this.props.task.employeeId,
     });
   }
 
@@ -86,26 +88,35 @@ class EditTaskContainer extends Component {
   handleSubmit = event => {
     event.preventDefault();
     //implementing form validation
-    if (this.state.title === "") {
-      this.setState({ error: "Error: title cannot be empty" });
+    if (this.state.description === "") {
+      this.setState({ error: "Error: description cannot be empty" });
       return;
     }
 
-    //get new info for course from form input
+    //get new info for task from form input
     let task = {
-      id: this.props.course.id,
-      title: this.state.title,
-      timeslot: this.state.timeslot,
+      id: this.props.task.id,
+      description: this.state.description,
+      priority: this.state.priority,
+      isComplete: this.state.isComplete,
       employeeId: this.state.employeeId
     };
 
-    this.props.editTask(task);
-
-    this.setState({
-      redirect: true,
-      redirectId: this.props.task.id
-    });
-
+    this.props.editTask(task)
+      .then(() => {
+        // Update component state with new task data
+        this.setState({
+          description: task.description,
+          priority: task.priority,
+          isComplete: task.isComplete,
+          employeeId: task.employeeId,
+          redirect: true,
+          redirectId: task.id
+        });
+      })
+      .catch((error) => {
+        // Handle error if necessary
+      });
   }
 
   componentWillUnmount() {
@@ -119,7 +130,7 @@ class EditTaskContainer extends Component {
 
     let otherEmployees = allEmployees.filter(employee => employee.id !== assignedEmployee);
 
-    //go to single course view of the edited course
+    //go to single task view of the edited task
     if (this.state.redirect) {
       return (<Redirect to={`/task/${this.state.redirectId}`} />)
     }
@@ -127,8 +138,8 @@ class EditTaskContainer extends Component {
     return (
       <div>
         <form style={{ textAlign: 'center' }} onSubmit={(e) => this.handleSubmit(e)}>
-          <label style={{ color: '#11153e', fontWeight: 'bold' }}>Title: </label>
-          <input type="text" name="title" value={this.state.title || ''} placeholder={task.title} onChange={(e) => this.handleChange(e)} />
+          <label style={{ color: '#11153e', fontWeight: 'bold' }}>description: </label>
+          <input type="text" name="description" value={this.state.description || ''} placeholder={task.description} onChange={(e) => this.handleChange(e)} />
           <br />
 
           <label style={{ color: '#11153e', fontWeight: 'bold' }}>Timeslot: </label>
@@ -157,7 +168,7 @@ class EditTaskContainer extends Component {
 
         {task.employeeId !== null ?
           <div> Current employee:
-            <Link to={`/employee/${task.employeeId}`}>{task.employee.firstname}</Link>
+            <Link to={`/employees/${task.employeeId}`}>{task.employee.firstname}</Link>
             <button onClick={async () => { await editTask({ id: task.id, employeeId: null }); fetchTask(task.id) }}>Unassign</button>
           </div>
           : <div> No employee currently assigned </div>
@@ -167,7 +178,7 @@ class EditTaskContainer extends Component {
           {otherEmployees.map(employee => {
             return (
               <div key={employee.id}>
-                <Link to={`/employee/${employee.id}`}>
+                <Link to={`/employees/${employee.id}`}>
                   <h4>{employee.firstname}</h4>
                 </Link>
                 <button onClick={async () => { await editTask({ id: task.id, employeeId: employee.id }); fetchTask(task.id) }}>Assign this employee</button>
@@ -176,6 +187,10 @@ class EditTaskContainer extends Component {
           })
           }
         </div>
+        <div>
+          <Link to={`/`}>Home</Link>
+        </div>
+
       </div>
     )
   }

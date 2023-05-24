@@ -5,7 +5,7 @@ import * as at from './actionTypes';
  * for each action type
  */
 
-// All instructors
+// All employees
 export const fetchAllEmployees = (employees) => {
   return {
     type: at.FETCH_ALL_EMPLOYEES,
@@ -13,7 +13,21 @@ export const fetchAllEmployees = (employees) => {
   };
 };
 
-//Single instructor
+export const addEmployee = (employee) => {
+  return {
+    type: at.ADD_EMPLOYEE,
+    payload: employee,
+  };
+};
+
+export const deleteEmployee = (employeeId) => {
+  return {
+    type: at.DELETE_EMPLOYEE,
+    payload: employeeId,
+  };
+};
+
+//Single employee
 export const fetchEmployee = (employee) => {
   return {
     type: at.FETCH_EMPLOYEE,

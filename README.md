@@ -1,11 +1,13 @@
-Christopher Lai
+## E.T. Manager (Employee and Task Manager)
+### Christopher Lai
 
-To run:
-[x] have postgres and postman installed
+#### To run: 
+- Have postgres and postman installed
+#### server-side-folder: (save specified packages into dependencies and then run node app.js)
+    npm install 
+    npm start 
 
-server-side-folder
-	[x] npm install
-	[x] npm start
-client-side-folder
-	[x] npm install
-	[x] npm start
+#### client-side-folder: (app opens on localhost:3000)
+    npm install
+    npm start
+    
