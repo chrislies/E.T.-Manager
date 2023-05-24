@@ -26,6 +26,28 @@ export const fetchEmployeeThunk = (id) => async (dispatch) => {
   }
 };
 
+//Add employee
+export const addEmployeeThunk = (employee) => async (dispatch) => {
+  try {
+    let res = await axios.post(`${path}/employees`, employee);
+    dispatch(ac.addEmployee(res.data));
+    return res.data;
+  } catch (err) {
+    console.error(err);
+  }
+};
+
+//Delete employee
+export const deleteEmployeeThunk = employeeId => async dispatch => {
+  try {
+    await axios.delete(`${path}/employees/${employeeId}`);
+    //delete succesful so change state with dispatch
+    dispatch(ac.deleteEmployee(employeeId));
+  } catch (err) {
+    console.error(err);
+  }
+}
+
 //All tasks
 export const fetchAllTasksThunk = () => async (dispatch) => {
   try {
@@ -36,6 +58,7 @@ export const fetchAllTasksThunk = () => async (dispatch) => {
   }
 };
 
+//Add task
 export const addTaskThunk = (task) => async (dispatch) => {
   try {
     let res = await axios.post(`${path}/tasks`, task);
@@ -46,6 +69,7 @@ export const addTaskThunk = (task) => async (dispatch) => {
   }
 };
 
+//Delete task
 export const deleteTaskThunk = taskId => async dispatch => {
   try {
     await axios.delete(`${path}/tasks/${taskId}`);
@@ -56,6 +80,7 @@ export const deleteTaskThunk = taskId => async dispatch => {
   }
 };
 
+//Edit task
 export const editTaskThunk = task => async dispatch => {
   try {
     let res = await axios.put(`${path}/tasks/${task.id}`, task);
