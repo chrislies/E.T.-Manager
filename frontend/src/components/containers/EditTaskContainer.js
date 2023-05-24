@@ -3,9 +3,6 @@ import { connect } from 'react-redux';
 import { Redirect, Link } from 'react-router-dom';
 
 import { fetchTaskThunk, editTaskThunk, fetchAllEmployeesThunk } from '../../store/thunks';
-// import employee from '../../store/reducers/employee';
-// import { Task } from '../../../../final-backend-updating/database/models';
-
 
 /*
 IMPORTANT: comments regarding implementation details!!
@@ -67,8 +64,11 @@ class EditTaskContainer extends Component {
   }
 
   handleChange = event => {
+    const { name, value } = event.target;
+    const newValue = name === 'isComplete' ? value === 'true' : value;
+
     this.setState({
-      [event.target.name]: event.target.value
+      [name]: newValue
     });
   }
 
@@ -78,7 +78,7 @@ class EditTaskContainer extends Component {
     //when the form gets submitted, this is how we can change
     //assigned instructor without having to manually enter in the 
     //instructorId like before
-    if (event.target.value === "staff") {
+    if (event.target.value === "unassigned") {
       this.setState({ employeeId: null });
     } else {
       this.setState({ employeeId: event.target.value })
@@ -138,25 +138,39 @@ class EditTaskContainer extends Component {
     return (
       <div>
         <form style={{ textAlign: 'center' }} onSubmit={(e) => this.handleSubmit(e)}>
-          <label style={{ color: '#11153e', fontWeight: 'bold' }}>description: </label>
+          <label style={{ color: '#11153e', fontWeight: 'bold' }}>Description: </label>
           <input type="text" name="description" value={this.state.description || ''} placeholder={task.description} onChange={(e) => this.handleChange(e)} />
           <br />
 
-          <label style={{ color: '#11153e', fontWeight: 'bold' }}>Timeslot: </label>
-          <input type="text" name="timeslot" value={this.state.timeslot || ''} placeholder={task.timeslot} onChange={(e) => this.handleChange(e)} />
+          <label style={{ color: '#11153e', fontWeight: 'bold' }}>Priority: </label>
+          {/* <input type="text" name="priority" value={this.state.priority || ''} placeholder={task.priority} onChange={(e) => this.handleChange(e)} /> */}
+          <select name="priority" value={this.state.priority || ''} onChange={(e) => this.handleChange(e)}>
+            <option value="">Select priority</option>
+            <option value="low">Low</option>
+            <option value="medium">Medium</option>
+            <option value="high">High</option>
+          </select>
+          <br />
+
+          <label style={{ color: '#11153e', fontWeight: 'bold' }}>Completed? </label>
+          <select name="isComplete" value={this.state.isComplete || false} onChange={(e) => this.handleChange(e)}>
+            <option value="">Select option</option>
+            <option value="true">Yes</option>
+            <option value="false">No</option>
+          </select>
           <br />
 
           <select onChange={(e) => this.handleSelectChange(e)}>
             {task.employee !== null ?
               <option value={task.employeeId}>{task.employee.firstname + " (current)"}</option>
-              : <option value="staff">Staff</option>
+              : <option value="unassigned">Unassigned</option>
             }
             {otherEmployees.map(employee => {
               return (
                 <option value={employee.id} key={employee.id}>{employee.firstname}</option>
               )
             })}
-            {task.employee !== null && <option value="staff">Staff</option>}
+            {task.employee !== null && <option value="unassigned">Unassigned</option>}
           </select>
 
           <button type="submit">
@@ -181,6 +195,7 @@ class EditTaskContainer extends Component {
                 <Link to={`/employees/${employee.id}`}>
                   <h4>{employee.firstname}</h4>
                 </Link>
+                {/* <button onClick={async () => { await editTask({ id: task.id, employeeId: employee.id }); fetchTask(task.id) }}>Assign this employee</button> */}
                 <button onClick={async () => { await editTask({ id: task.id, employeeId: employee.id }); fetchTask(task.id) }}>Assign this employee</button>
               </div>
             )

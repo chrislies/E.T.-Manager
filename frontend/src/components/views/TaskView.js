@@ -5,7 +5,9 @@ const TaskView = (props) => {
   return (
     <div>
       <h1>{task.description}</h1>
-      {task.employee ? <h3>{task.employee.firstname + " " + task.employee.lastname}</h3> : <h3>staff</h3>}
+      <h3>Task Priority: {task.priority}</h3>
+      {task.isComplete ? <h3>Task Completed</h3> : <h3>Task Incomplete</h3>}
+      {task.employee ? <h3>{task.employee.firstname + " " + task.employee.lastname}</h3> : <h3>Unassigned</h3>}
       <Link to={`/editTask/${task.id}`}>Edit task information</Link>
       <br />
       <Link to={`/tasks`}>View all tasks</Link>

@@ -30,7 +30,7 @@ class NewTaskContainer extends Component {
     event.preventDefault();
     //dont need ID because the course has not been created yet
     if (this.state.description === "") {
-      this.setState({ error: "description field is required" });
+      this.setState({ error: "Description field is required" });
       return;
     }
     let task = {
