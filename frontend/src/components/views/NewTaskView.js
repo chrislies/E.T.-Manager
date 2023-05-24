@@ -18,7 +18,12 @@ const NewTaskView = (props) => {
           <br />
 
           <label style={{ color: '#11153e', fontWeight: 'bold' }}>Priority: </label>
-          <input type="text" name="priority" onChange={(e) => handleChange(e)} />
+          {/* <input type="text" name="priority" onChange={(e) => handleChange(e)} /> */}
+          <select onChange={(e) => handleChange(e)}>
+            <option value="high">High</option>
+            <option value="medium">Medium</option>
+            <option value="low">Low</option>
+          </select>
           <br />
           <br />
 
