@@ -18,14 +18,12 @@ const AllTasksView = (props) => {
       {tasks.map((task) => {
         let description = task.description;
         return (
-          // <div style={{ display: "flex", flexDirection: "row" }}>
-          <div key={task.id}>
+          <div key={task.id} style={{ display: "flex", flexDirection: "row", justifyContent: "center", margin: 15 }}>
             <Link to={`/task/${task.id}`}>
-              <h1>{description}</h1>
+              <h1 style={{ margin: 0, marginRight: 15 }}>{description}</h1>
             </Link>
             <button onClick={() => deleteTask(task.id)}>Delete</button>
           </div>
-          // </div>
         );
       }
       )}
