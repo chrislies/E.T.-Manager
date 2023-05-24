@@ -1,9 +1,9 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { 
+import {
   fetchEmployeeThunk,
   fetchAllTasksThunk,
-  editTaskThunk 
+  editTaskThunk
 } from "../../store/thunks";
 
 import { EmployeeView } from "../views";
@@ -17,7 +17,7 @@ class EmployeeContainer extends Component {
 
   render() {
     return (
-      <EmployeeView 
+      <EmployeeView
         employee={this.props.employee}
         editTask={this.props.editTask}
         allTasks={this.props.allTasks}

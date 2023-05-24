@@ -45,7 +45,8 @@ class EditTaskContainer extends Component {
     super(props);
     this.state = {
       description: "",
-      timeslot: "",
+      priority: "",
+      isComplete: false,
       employeeId: null,
       redirect: false,
       redirectId: null,
@@ -59,7 +60,8 @@ class EditTaskContainer extends Component {
     this.props.fetchEmployees();
     this.setState({
       description: this.props.task.description,
-      timeslot: this.props.task.timeslot,
+      priority: this.props.task.priority,
+      isComplete: this.props.task.isComplete,
       employeeId: this.props.task.employeeId,
     });
   }
@@ -95,17 +97,26 @@ class EditTaskContainer extends Component {
     let task = {
       id: this.props.task.id,
       description: this.state.description,
-      timeslot: this.state.timeslot,
+      priority: this.state.priority,
+      isComplete: this.state.isComplete,
       employeeId: this.state.employeeId
     };
 
-    this.props.editTask(task);
-
-    this.setState({
-      redirect: true,
-      redirectId: this.props.task.id
-    });
-
+    this.props.editTask(task)
+      .then(() => {
+        // Update component state with new task data
+        this.setState({
+          description: task.description,
+          priority: task.priority,
+          isComplete: task.isComplete,
+          employeeId: task.employeeId,
+          redirect: true,
+          redirectId: task.id
+        });
+      })
+      .catch((error) => {
+        // Handle error if necessary
+      });
   }
 
   componentWillUnmount() {
@@ -157,7 +168,7 @@ class EditTaskContainer extends Component {
 
         {task.employeeId !== null ?
           <div> Current employee:
-            <Link to={`/employee/${task.employeeId}`}>{task.employee.firstname}</Link>
+            <Link to={`/employees/${task.employeeId}`}>{task.employee.firstname}</Link>
             <button onClick={async () => { await editTask({ id: task.id, employeeId: null }); fetchTask(task.id) }}>Unassign</button>
           </div>
           : <div> No employee currently assigned </div>
@@ -167,7 +178,7 @@ class EditTaskContainer extends Component {
           {otherEmployees.map(employee => {
             return (
               <div key={employee.id}>
-                <Link to={`/employee/${employee.id}`}>
+                <Link to={`/employees/${employee.id}`}>
                   <h4>{employee.firstname}</h4>
                 </Link>
                 <button onClick={async () => { await editTask({ id: task.id, employeeId: employee.id }); fetchTask(task.id) }}>Assign this employee</button>
@@ -176,6 +187,10 @@ class EditTaskContainer extends Component {
           })
           }
         </div>
+        <div>
+          <Link to={`/`}>Home</Link>
+        </div>
+
       </div>
     )
   }

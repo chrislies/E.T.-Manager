@@ -9,6 +9,8 @@ const TaskView = (props) => {
       <Link to={`/editTask/${task.id}`}>Edit task information</Link>
       <br />
       <Link to={`/tasks`}>View all tasks</Link>
+      <br />
+      <Link to={`/`}>Home</Link>
     </div>
   );
 

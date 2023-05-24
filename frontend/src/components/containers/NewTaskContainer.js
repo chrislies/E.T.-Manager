@@ -12,7 +12,7 @@ class NewTaskContainer extends Component {
     this.state = {
       description: "",
       priority: "",
-      isComplete: "",
+      isComplete: false,
       employeeId: null,
       redirect: false,
       redirectId: null,
