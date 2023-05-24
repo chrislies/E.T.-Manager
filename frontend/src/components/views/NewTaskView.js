@@ -23,12 +23,7 @@ const NewTaskView = (props) => {
           <br />
 
           <label style={{ color: '#11153e', fontWeight: 'bold' }}>Completed? </label>
-          {/* <input type="checkbox" name="isComplete" onChange={(e) => handleChange(e)} /> */}
-          <select onChange={(e) => handleChange(e)}>
-            <option value="none" selected disabled hidden></option>
-            <option value="Yes">Yes</option>
-            <option value="No">No</option>
-          </select>
+          <input type="checkbox" name="isComplete" onChange={(e) => handleChange(e)} />
           <br />
           <br />
 
