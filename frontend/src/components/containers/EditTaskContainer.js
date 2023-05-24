@@ -52,15 +52,22 @@ class EditTaskContainer extends Component {
   }
 
   componentDidMount() {
-    //getting task ID from url
+    //Getting task ID from URL
     this.props.fetchTask(this.props.match.params.id);
     this.props.fetchEmployees();
-    this.setState({
-      description: this.props.task.description,
-      priority: this.props.task.priority,
-      isComplete: this.props.task.isComplete,
-      employeeId: this.props.task.employeeId,
-    });
+  }
+
+  componentDidUpdate(prevProps) {
+    //Check if the task has been updated
+    if (prevProps.task !== this.props.task) {
+      const { task } = this.props;
+      this.setState({
+        description: task.description,
+        priority: task.priority,
+        isComplete: task.isComplete,
+        employeeId: task.employeeId
+      });
+    }
   }
 
   handleChange = event => {
@@ -78,11 +85,10 @@ class EditTaskContainer extends Component {
     //when the form gets submitted, this is how we can change
     //assigned instructor without having to manually enter in the 
     //instructorId like before
-    if (event.target.value === "unassigned") {
-      this.setState({ employeeId: null });
-    } else {
-      this.setState({ employeeId: event.target.value })
-    }
+    const { value } = event.target;
+    const employeeId = value === "unassigned" ? null : value;
+
+    this.setState({ employeeId });
   }
 
   handleSubmit = event => {
