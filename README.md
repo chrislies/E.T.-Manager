@@ -3,6 +3,7 @@
 
 #### To run: 
 - Have postgres and postman installed
+- Change password in configDB.js for backend compatibility
 #### server-side-folder: (save specified packages into dependencies and then run node app.js)
     npm install 
     npm start 
