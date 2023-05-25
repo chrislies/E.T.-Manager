@@ -7,8 +7,10 @@ const EmployeeView = (props) => {
 
   return (
     <div>
-      <h1>{`${employee.firstname} ${employee.lastname}`}</h1>
-      <h3>{employee.department}</h3>
+      <div class="employeeInfo">
+        <h1>{`${employee.firstname} ${employee.lastname}`}</h1>
+        <h3>{employee.department}</h3>
+      </div>
       <Link to={`/editEmployee/${employee.id}`}>
         <button>Edit Employee Info</button>
       </Link>
@@ -20,9 +22,9 @@ const EmployeeView = (props) => {
         <div>Assigned tasks:
           {assignedTasks.map(task => {
             return (
-              <div key={task.id}>
+              <div class="tasks" key={task.id}>
                 <Link to={`/task/${task.id}`}>
-                  <h4>{task.description}</h4>
+                  <h4 class="taskText">{task.description}</h4>
                 </Link>
                 <button onClick={() => editTask({ id: task.id, employeeId: null })}>x</button>
               </div>
@@ -31,9 +33,9 @@ const EmployeeView = (props) => {
         <div>Available tasks:
           {availableTasks.map(task => {
             return (
-              <div key={task.id}>
+              <div class="tasks" key={task.id}>
                 <Link to={`/task/${task.id}`}>
-                  <h4>{task.description}</h4>
+                  <h4 class="taskText">{task.description}</h4>
                 </Link>
                 <button onClick={() => editTask({ id: task.id, employeeId: employee.id })}>+</button>
               </div>

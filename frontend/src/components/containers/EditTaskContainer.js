@@ -142,76 +142,78 @@ class EditTaskContainer extends Component {
     }
 
     return (
-      <div>
-        <form style={{ textAlign: 'center' }} onSubmit={(e) => this.handleSubmit(e)}>
-          <label style={{ color: '#11153e', fontWeight: 'bold' }}>Description: </label>
-          <input type="text" name="description" value={this.state.description || ''} placeholder={task.description} onChange={(e) => this.handleChange(e)} />
-          <br />
+      <div className="editTaskContainerParent">
+        <div className="editTaskContainer">
+          <form style={{ textAlign: 'center' }} onSubmit={(e) => this.handleSubmit(e)}>
+            <label style={{ color: '#11153e', fontWeight: 'bold' }}>Description: </label>
+            <input type="text" name="description" value={this.state.description || ''} placeholder={task.description} onChange={(e) => this.handleChange(e)} />
+            <br />
 
-          <label style={{ color: '#11153e', fontWeight: 'bold' }}>Priority: </label>
-          {/* <input type="text" name="priority" value={this.state.priority || ''} placeholder={task.priority} onChange={(e) => this.handleChange(e)} /> */}
-          <select name="priority" value={this.state.priority || ''} onChange={(e) => this.handleChange(e)}>
-            <option value="">Select priority</option>
-            <option value="low">Low</option>
-            <option value="medium">Medium</option>
-            <option value="high">High</option>
-          </select>
-          <br />
+            <label style={{ color: '#11153e', fontWeight: 'bold' }}>Priority: </label>
+            {/* <input type="text" name="priority" value={this.state.priority || ''} placeholder={task.priority} onChange={(e) => this.handleChange(e)} /> */}
+            <select name="priority" value={this.state.priority || ''} onChange={(e) => this.handleChange(e)}>
+              <option value="">Select priority</option>
+              <option value="low">Low</option>
+              <option value="medium">Medium</option>
+              <option value="high">High</option>
+            </select>
+            <br />
 
-          <label style={{ color: '#11153e', fontWeight: 'bold' }}>Completed? </label>
-          <select name="isComplete" value={this.state.isComplete || false} onChange={(e) => this.handleChange(e)}>
-            <option value="">Select option</option>
-            <option value="true">Yes</option>
-            <option value="false">No</option>
-          </select>
-          <br />
+            <label style={{ color: '#11153e', fontWeight: 'bold' }}>Completed? </label>
+            <select name="isComplete" value={this.state.isComplete || false} onChange={(e) => this.handleChange(e)}>
+              <option value="">Select option</option>
+              <option value="true">Yes</option>
+              <option value="false">No</option>
+            </select>
+            <br />
 
-          <select onChange={(e) => this.handleSelectChange(e)}>
-            {task.employee !== null ?
-              <option value={task.employeeId}>{task.employee.firstname + " (current)"}</option>
-              : <option value="unassigned">Unassigned</option>
-            }
+            <select onChange={(e) => this.handleSelectChange(e)}>
+              {task.employee !== null ?
+                <option value={task.employeeId}>{task.employee.firstname + " (current)"}</option>
+                : <option value="unassigned">Unassigned</option>
+              }
+              {otherEmployees.map(employee => {
+                return (
+                  <option value={employee.id} key={employee.id}>{employee.firstname}</option>
+                )
+              })}
+              {task.employee !== null && <option value="unassigned">Unassigned</option>}
+            </select>
+
+            <button type="submit">
+              Submit
+            </button>
+
+          </form>
+          {this.state.error !== "" && <p>{this.state.error}</p>}
+
+          {task.employeeId !== null ?
+            <div> {`Current employee: `}
+              <Link to={`/employees/${task.employeeId}`}>{task.employee.firstname}</Link> {``}
+              <button onClick={async () => { await editTask({ id: task.id, employeeId: null }); fetchTask(task.id) }}>Unassign</button>
+            </div>
+            : <div> No employee currently assigned </div>
+          }
+
+          <div> Other employees
             {otherEmployees.map(employee => {
               return (
-                <option value={employee.id} key={employee.id}>{employee.firstname}</option>
+                <div class="assignEmployee" key={employee.id}>
+                  <Link to={`/employees/${employee.id}`}>
+                    <h4>{employee.firstname}</h4>
+                  </Link>
+                  {/* <button onClick={async () => { await editTask({ id: task.id, employeeId: employee.id }); fetchTask(task.id) }}>Assign this employee</button> */}
+                  <button onClick={async () => { await editTask({ id: task.id, employeeId: employee.id }); fetchTask(task.id) }}>Assign this employee</button>
+                </div>
               )
-            })}
-            {task.employee !== null && <option value="unassigned">Unassigned</option>}
-          </select>
-
-          <button type="submit">
-            Submit
-          </button>
-
-        </form>
-        {this.state.error !== "" && <p>{this.state.error}</p>}
-
-        {task.employeeId !== null ?
-          <div> Current employee:
-            <Link to={`/employees/${task.employeeId}`}>{task.employee.firstname}</Link>
-            <button onClick={async () => { await editTask({ id: task.id, employeeId: null }); fetchTask(task.id) }}>Unassign</button>
+            })
+            }
           </div>
-          : <div> No employee currently assigned </div>
-        }
+          <div>
+            <Link to={`/`}>Home</Link>
+          </div>
 
-        <div> Other employees
-          {otherEmployees.map(employee => {
-            return (
-              <div key={employee.id}>
-                <Link to={`/employees/${employee.id}`}>
-                  <h4>{employee.firstname}</h4>
-                </Link>
-                {/* <button onClick={async () => { await editTask({ id: task.id, employeeId: employee.id }); fetchTask(task.id) }}>Assign this employee</button> */}
-                <button onClick={async () => { await editTask({ id: task.id, employeeId: employee.id }); fetchTask(task.id) }}>Assign this employee</button>
-              </div>
-            )
-          })
-          }
         </div>
-        <div>
-          <Link to={`/`}>Home</Link>
-        </div>
-
       </div>
     )
   }
