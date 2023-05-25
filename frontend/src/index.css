@@ -20,8 +20,28 @@ code {
   border-radius: 10%;
 }
 
-.taskText {
-  margin: 0;
+.allTaskViewContents {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  margin: 15px;
+}
+
+.allTaskViewContents>*:first-child {
+  margin-right: auto;
+}
+
+.allTaskViewContents>*:last-child {
+  margin-left: auto;
+}
+
+.completionStatusText {
+  display: flex;
+  justify-content: space-evenly;
+  flex-direction: column;
+  height: 15px;
+  padding: 5px;
+  border-radius: 10%;
 }
 
 .employeeInfo *,

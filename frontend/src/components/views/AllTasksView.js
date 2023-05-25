@@ -19,11 +19,14 @@ const AllTasksView = (props) => {
         {tasks.map((task) => {
           let description = task.description;
           return (
-            <div key={task.id} style={{ display: "flex", flexDirection: "row", justifyContent: "center", margin: 15 }}>
+            <div class="allTaskViewContents" key={task.id} style={{ display: "flex", flexDirection: "row", justifyContent: "center", margin: 15 }}>
+              <p className="completionStatusText" style={{ backgroundColor: task.isComplete ? "#43e06b" : "#e02222" }}>
+                {task.isComplete ? "Completed" : "Incomplete"}
+              </p>
               <Link to={`/task/${task.id}`}>
-                <h1 class="tasks" style={{ margin: 0, marginRight: 15 }}>{description}</h1>
+                <h1 class="tasks" style={{ margin: 0, marginLeft: 15, marginRight: 15 }}>{description}</h1>
               </Link>
-              <button onClick={() => deleteTask(task.id)}>Delete</button>
+              <button class="deleteButton" onClick={() => deleteTask(task.id)}>Delete</button>
             </div>
           );
         }
