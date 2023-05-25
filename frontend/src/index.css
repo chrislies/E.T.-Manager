@@ -13,6 +13,10 @@ code {
     monospace;
 }
 
+.appHeader {
+  padding-bottom: 15px;
+}
+
 .tasks {
   background-color: lightblue;
   margin: 5px;
