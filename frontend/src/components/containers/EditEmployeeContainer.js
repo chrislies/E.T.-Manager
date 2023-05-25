@@ -81,28 +81,30 @@ class EditEmployeeContainer extends Component {
     }
 
     return (
-      <div>
-        <form style={{ textAlign: 'center' }} onSubmit={(e) => this.handleSubmit(e)}>
-          <label style={{ color: '#11153e', fontWeight: 'bold' }}>First name: </label>
-          <input type="text" name="firstname" value={this.state.firstname || ''} placeholder={employee.fristname} onChange={(e) => this.handleChange(e)} />
-          <br />
+      <div class="editEmployeeCcontainerParent">
+        <div class="editEmployeeCcontainer">
+          <form style={{ textAlign: 'center' }} onSubmit={(e) => this.handleSubmit(e)}>
+            <label style={{ color: '#11153e', fontWeight: 'bold' }}>First name: </label>
+            <input type="text" name="firstname" value={this.state.firstname || ''} placeholder={employee.fristname} onChange={(e) => this.handleChange(e)} />
+            <br />
 
-          <label style={{ color: '#11153e', fontWeight: 'bold' }}>Last name: </label>
-          <input type="text" name="lastname" value={this.state.lastname || ''} placeholder={employee.lastname} onChange={(e) => this.handleChange(e)} />
-          <br />
+            <label style={{ color: '#11153e', fontWeight: 'bold' }}>Last name: </label>
+            <input type="text" name="lastname" value={this.state.lastname || ''} placeholder={employee.lastname} onChange={(e) => this.handleChange(e)} />
+            <br />
 
-          <label style={{ color: '#11153e', fontWeight: 'bold' }}>Department: </label>
-          <input type="text" name="department" value={this.state.department || ''} placeholder={employee.department} onChange={(e) => this.handleChange(e)} />
-          <br />
+            <label style={{ color: '#11153e', fontWeight: 'bold' }}>Department: </label>
+            <input type="text" name="department" value={this.state.department || ''} placeholder={employee.department} onChange={(e) => this.handleChange(e)} />
+            <br />
 
-          <button type="submit">
-            Submit
-          </button>
+            <button type="submit">
+              Submit
+            </button>
 
-        </form>
-        {this.state.error !== "" && <p>{this.state.error}</p>}
-        <div>
-          <Link to={`/`}>Home</Link>
+          </form>
+          {this.state.error !== "" && <p>{this.state.error}</p>}
+          <div>
+            <Link to={`/`}>Home</Link>
+          </div>
         </div>
       </div>
     )

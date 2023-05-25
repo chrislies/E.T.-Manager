@@ -16,26 +16,28 @@ const AllEmployeesView = (props) => {
   }
 
   return (
-    <div>
-      {allEmployees.map((employee) => {
-        let name = employee.firstname + " " + employee.lastname;
-        return (
-          <div key={employee.id} style={{ marginTop: 15 }}>
-            <Link to={`/employees/${employee.id}`}>
-              <h1 style={{ margin: 0, marginRight: 15 }}>{name}</h1>
-            </Link>
-            <p style={{ margin: 0, marginRight: 15 }}>{employee.department}</p>
-            <button onClick={() => deleteEmployee(employee.id)}>Delete</button>
-          </div>
-        );
-      })}
-      <br />
-      <Link to={`/`}>
-        <button style={{ marginRight: 15 }}>Home</button>
-      </Link>
-      <Link to={`/newEmployee`}>
-        <button>Add Employee</button>
-      </Link>
+    <div class="allEmployeesViewContainerParent">
+      <div class="allEmployeesViewContainer">
+        {allEmployees.map((employee) => {
+          let name = employee.firstname + " " + employee.lastname;
+          return (
+            <div class="employeeInfo" key={employee.id}>
+              <Link to={`/employees/${employee.id}`}>
+                <h2>{name}</h2>
+              </Link>
+              <p>{employee.department}</p>
+              <button class="deleteButton" onClick={() => deleteEmployee(employee.id)}>Delete</button>
+            </div>
+          );
+        })}
+        <br />
+        <Link to={`/`}>
+          <button style={{ marginRight: 15 }}>Home</button>
+        </Link>
+        <Link to={`/newEmployee`}>
+          <button>Add Employee</button>
+        </Link>
+      </div>
     </div>
   );
 };
